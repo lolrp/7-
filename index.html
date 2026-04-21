@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Death Note</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: #000;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      overflow-x: hidden;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .sayt {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      background: #000;
+    }
+
+    .glavnyi-blok {
+      position: relative;
+      width: 100%;
+      height: 560px;
+      overflow: hidden;
+      background: #000;
+    }
+
+    .glavnoe-foto {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+      display: block;
+    }
+
+    .menu {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 410px;
+      height: 74px;
+      border-top: 1px solid #a11414;
+      border-left: 1px solid #a11414;
+      border-bottom: 1px solid #a11414;
+      background: rgba(0, 0, 0, 0.08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 34px;
+      z-index: 5;
+    }
+
+    .menu a {
+      font-size: 22px;
+      color: #fff;
+      transition: 0.2s;
+    }
+
+    .menu a:hover {
+      color: #cf1a1a;
+    }
+
+    .blok-vhoda {
+      position: absolute;
+      top: 150px;
+      right: 110px;
+      width: 200px;
+      min-height: 220px;
+      background: #2f2f2f;
+      border-radius: 14px;
+      padding: 16px 14px 16px;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.35);
+      z-index: 5;
+    }
+
+    .zagolovok-vhoda {
+      font-size: 11px;
+      font-weight: bold;
+      margin-bottom: 14px;
+      color: #fff;
+    }
+
+    .pole-vhoda {
+      width: 100%;
+      height: 28px;
+      border: none;
+      border-radius: 4px;
+      padding: 0 8px;
+      margin-bottom: 12px;
+      font-size: 11px;
+      outline: none;
+    }
+
+    .stroka-zapomnit {
+      display: flex;
+      align-items: flex-start;
+      gap: 6px;
+      margin-bottom: 14px;
+    }
+
+    .stroka-zapomnit input {
+      width: 10px;
+      height: 10px;
+      margin-top: 2px;
+      accent-color: #bb1515;
+      flex-shrink: 0;
+    }
+
+    .stroka-zapomnit span {
+      font-size: 7px;
+      line-height: 1.2;
+      color: #d8d8d8;
+    }
+
+    .knopka-vhoda {
+      width: 64px;
+      height: 24px;
+      border: none;
+      border-radius: 12px;
+      background: #b91616;
+      color: #fff;
+      font-size: 10px;
+      cursor: pointer;
+      display: block;
+      margin: 0 auto;
+      transition: 0.2s;
+    }
+
+    .knopka-vhoda:hover {
+      background: #d61c1c;
+    }
+
+    .osnovnoi-blok {
+      position: relative;
+      width: 100%;
+      background: linear-gradient(90deg, #2f2f2f 0%, #3b3b3b 50%, #2f2f2f 100%);
+      overflow: hidden;
+      padding: 70px 40px 70px;
+    }
+.cvetok-sprava {
+  position: absolute;
+  top: 118px;
+  right: 18px;
+  width: 170px;
+  transform: rotate(-158deg);
+  opacity: 0.9;
+  pointer-events: none;
+  z-index: 3;
+}
+
+.cvetok-sleva {
+  position: absolute;
+  left: -70px;
+  top: 620px;
+  width: 210px;
+  transform: rotate(-10deg);
+  opacity: 0.9;
+  pointer-events: none;
+  z-index: 3;
+}
+
+    .blok-galerei {
+      position: relative;
+      z-index: 2;
+    }
+
+    .zagolovok-sekcii {
+      text-align: center;
+      font-size: 34px;
+      font-weight: normal;
+      margin-bottom: 14px;
+    }
+
+    .liniya-sekcii {
+      width: 360px;
+      height: 2px;
+      background: #a11414;
+      margin: 0 auto 56px;
+    }
+
+    .setka-kartochek {
+      width: 100%;
+      max-width: 980px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 44px 34px;
+      justify-items: center;
+    }
+
+    .kartochka {
+      width: 205px;
+      min-height: 390px;
+      background: #5a5a5a;
+      border-radius: 6px;
+      padding: 14px 14px 16px;
+      text-align: center;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.28);
+    }
+
+    .foto-personazha {
+      width: 110px;
+      height: 210px;
+      object-fit: cover;
+      display: block;
+      margin: 0 auto 14px;
+      border: 3px solid #dddddd;
+      background: #ddd;
+    }
+
+    .imya-personazha {
+      font-size: 18px;
+      line-height: 1.2;
+      margin-bottom: 6px;
+    }
+
+    .rol-personazha {
+      font-size: 10px;
+      color: #eeeeee;
+      line-height: 1.3;
+      min-height: 28px;
+      margin-bottom: 10px;
+    }
+
+    .opisanie-personazha {
+      font-size: 10px;
+      line-height: 1.45;
+      color: #f7f7f7;
+      text-align: left;
+    }
+
+    .blok-prosmotra {
+      position: relative;
+      z-index: 2;
+      margin-top: 120px;
+    }
+
+    .blok-proigryvatelya {
+      width: 100%;
+      max-width: 900px;
+      margin: 0 auto;
+      text-align: left;
+    }
+
+    .vybor-serii {
+      width: 130px;
+      height: 30px;
+      font-size: 14px;
+      margin-bottom: 12px;
+    }
+
+    .okno-video {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      background: #000;
+      overflow: hidden;
+      box-shadow: 0 0 0 1px rgba(0,0,0,0.25);
+    }
+
+    .okno-video iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      display: block;
+    }
+
+    .podval {
+      width: 100%;
+      height: 210px;
+      overflow: hidden;
+      background: #000;
+    }
+
+    .foto-podvala {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .fon-modalnogo-okna {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.76);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+    }
+
+    .modalnoe-okno {
+      width: 360px;
+      background: #212121;
+      border-radius: 14px;
+      padding: 22px;
+      position: relative;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.45);
+    }
+.cvetok-sprava { top: 0px; right: 8px; }
+.cvetok-sleva { top: 345px; left: -88px; }
+    .zagolovok-modalki {
+      font-size: 24px;
+      font-weight: normal;
+      text-align: center;
+      margin-bottom: 14px;
+    }
+
+    .pole-modalki {
+      width: 100%;
+      height: 40px;
+      margin-bottom: 12px;
+      border: none;
+      border-radius: 8px;
+      padding: 0 10px;
+      font-size: 14px;
+      outline: none;
+    }
+
+    .knopka-modalki {
+      width: 100%;
+      height: 40px;
+      border: none;
+      border-radius: 9px;
+      background: #ba1717;
+      color: #fff;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .knopka-modalki:hover {
+      background: #d81c1c;
+    }
+
+    .zakryt-modalku {
+      position: absolute;
+      top: 8px;
+      right: 12px;
+      border: none;
+      background: transparent;
+      color: #fff;
+      font-size: 22px;
+      cursor: pointer;
+    }
+
+    .tekst-pereklyucheniya {
+      margin-top: 10px;
+      font-size: 13px;
+      text-align: center;
+      color: #ddd;
+    }
+
+    .tekst-pereklyucheniya span {
+      color: #e02222;
+      cursor: pointer;
+    }
+
+    .soobshenie {
+      min-height: 18px;
+      font-size: 12px;
+      text-align: center;
+      margin-top: 10px;
+      color: #fff;
+    }
+.obertka-galerei {
+  position: relative;
+  width: 100%;
+  max-width: 980px;
+  margin: 0 auto;
+}
+
+.setka-kartochek {
+  width: 100%;
+  max-width: 980px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 44px 34px;
+  justify-items: center;
+  position: relative;
+  z-index: 2;
+}
+
+.cvetok-sprava {
+  position: absolute;
+  top: 10px;
+  right: 18px;
+  width: 170px;
+  transform: rotate(-158deg);
+  opacity: 0.9;
+  pointer-events: none;
+  z-index: 3;
+}
+
+.cvetok-sleva {
+  position: absolute;
+  left: -78px;
+  top: 360px;
+  width: 220px;
+  transform: rotate(-10deg);
+  opacity: 0.9;
+  pointer-events: none;
+  z-index: 3;
+}
+   
+  </style>
+</head>
+<body>
+
+  <div class="sayt">
+
+    <div class="glavnyi-blok" id="glavnaya">
+      <img src="hero.png" alt="Главная картинка" class="glavnoe-foto">
+
+      <div class="menu">
+        <a href="#glavnaya">главная</a>
+        <a href="#galereya">галерея</a>
+        <a href="#smotret">смотреть</a>
+      </div>
+
+      <div class="blok-vhoda">
+        <div class="zagolovok-vhoda">Death Note Access</div>
+        <input type="text" id="miniLogin" class="pole-vhoda" placeholder="Логин">
+        <input type="password" id="miniPassword" class="pole-vhoda" placeholder="Пароль">
+
+        <div class="stroka-zapomnit">
+          <input type="checkbox" id="remember">
+          <span>запомнить вход на следующей странице</span>
+        </div>
+
+        <button class="knopka-vhoda" onclick="openLogin()">Войти</button>
+      </div>
+    </div>
+
+    <div class="osnovnoi-blok">
+      <img class="cvetok-sprava" src="flower-right.png" alt="" class="cvetok-sprava">
+      <img class=".cvetok-sleva" src="flower-left.png" alt="" class="cvetok-sleva">
+
+     <div class="blok-galerei" id="galereya">
+  <div class="zagolovok-sekcii">Галерея ✧</div>
+  <div class="liniya-sekcii"></div>
+
+  <div class="obertka-galerei">
+    <img src="flower-right.png" alt="" class="cvetok-sprava">
+    <img src="flower-left.png" alt="" class="cvetok-sleva">
+
+    <div class="setka-kartochek">
+      <div class="kartochka">
+        <img src="light.png" alt="Лайт Ягами" class="foto-personazha">
+        <div class="imya-personazha">Лайт Ягами</div>
+        <div class="rol-personazha">Главный герой<br>Первый Кира</div>
+        <div class="opisanie-personazha">Гениальный студент, ставший Кирой после того, как нашёл Тетрадь смерти.</div>
+      </div>
+
+      <div class="kartochka">
+        <img src="near.png" alt="Near" class="foto-personazha">
+        <div class="imya-personazha">Near</div>
+        <div class="rol-personazha">Наследник L</div>
+        <div class="opisanie-personazha">Холодный и аналитичный преемник L, продолживший расследование после его смерти.</div>
+      </div>
+
+      <div class="kartochka">
+        <img src="l.png" alt="L" class="foto-personazha">
+        <div class="imya-personazha">L</div>
+        <div class="rol-personazha">Детектив</div>
+        <div class="opisanie-personazha">Легендарный сыщик, ведущий интеллектуальную дуэль против Киры.</div>
+      </div>
+
+      <div class="kartochka">
+        <img src="misa.png" alt="Миса Аманэ" class="foto-personazha">
+        <div class="imya-personazha">Миса Аманэ</div>
+        <div class="rol-personazha">Вторая Кира</div>
+        <div class="opisanie-personazha">Модель и поклонница Киры, готовая на всё ради Лайта.</div>
+      </div>
+
+      <div class="kartochka">
+        <img src="rem.png" alt="Рем" class="foto-personazha">
+        <div class="imya-personazha">Рем</div>
+        <div class="rol-personazha">Бог смерти</div>
+        <div class="opisanie-personazha">Бог смерти, готовая пожертвовать собой ради защиты Мисы.</div>
+      </div>
+
+      <div class="kartochka">
+        <img src="ryuk.png" alt="Рюк" class="foto-personazha">
+        <div class="imya-personazha">Рюк</div>
+        <div class="rol-personazha">Бог смерти</div>
+        <div class="opisanie-personazha">Бог смерти, из-за которого история Death Note вообще началась.</div>
+      </div>
+
+      <div class="kartochka">
+        <img src="mikami.png" alt="Тэру Миками" class="foto-personazha">
+        <div class="imya-personazha">Тэру Миками</div>
+        <div class="rol-personazha">Исполнитель воли Киры</div>
+        <div class="opisanie-personazha">Миками становится временным владельцем тетради смерти и исполнителем воли Киры.</div>
+      </div>
+
+      <div class="kartochka">
+        <img src="sidoh.png" alt="Сидо" class="foto-personazha">
+        <div class="imya-personazha">Сидо</div>
+        <div class="rol-personazha">Бог смерти</div>
+        <div class="opisanie-personazha">Бог смерти, чью тетрадь Рюк бросил в человеческий мир.</div>
+      </div>
+    </div>
+  </div>
+</div>
+      <div class="blok-prosmotra" id="smotret">
+        <div class="zagolovok-sekcii">Смотреть</div>
+        <div class="liniya-sekcii"></div>
+
+        <div class="blok-proigryvatelya">
+          <select id="episodeSelect" class="vybor-serii" onchange="changeEpisode(this.value)">
+            <option value="1">1 серия</option>
+            <option value="2">2 серия</option>
+            <option value="3">3 серия</option>
+            <option value="4">4 серия</option>
+            <option value="5">5 серия</option>
+            <option value="6">6 серия</option>
+            <option value="7">7 серия</option>
+            <option value="8">8 серия</option>
+            <option value="9">9 серия</option>
+            <option value="10">10 серия</option>
+            <option value="11">11 серия</option>
+            <option value="12">12 серия</option>
+            <option value="13">13 серия</option>
+            <option value="14">14 серия</option>
+            <option value="15">15 серия</option>
+            <option value="16">16 серия</option>
+            <option value="17">17 серия</option>
+            <option value="18">18 серия</option>
+            <option value="19">19 серия</option>
+            <option value="20">20 серия</option>
+            <option value="21">21 серия</option>
+            <option value="22">22 серия</option>
+            <option value="23">23 серия</option>
+            <option value="24">24 серия</option>
+            <option value="25">25 серия</option>
+            <option value="26">26 серия</option>
+            <option value="27">27 серия</option>
+            <option value="28">28 серия</option>
+            <option value="29">29 серия</option>
+            <option value="30">30 серия</option>
+            <option value="31">31 серия</option>
+            <option value="32">32 серия</option>
+            <option value="33">33 серия</option>
+            <option value="34">34 серия</option>
+            <option value="35">35 серия</option>
+            <option value="36">36 серия</option>
+            <option value="37">37 серия</option>
+          </select>
+
+          <div class="okno-video">
+            <iframe
+              id="player"
+              src="https://vkvideo.ru/video_ext.php?oid=-196980150&id=456239023&hash=1ae84bb9102b8a22&hd=4"
+              allow="autoplay; encrypted-media; fullscreen; picture-in-picture; screen-wake-lock;"
+              allowfullscreen>
+            </iframe>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="podval">
+      <img src="footer.png" alt="Подвал" class="foto-podvala">
+    </div>
+  </div>
+
+  <div class="fon-modalnogo-okna" id="loginModal">
+    <div class="modalnoe-okno">
+      <button class="zakryt-modalku" onclick="closeModal('loginModal')">×</button>
+      <div class="zagolovok-modalki">Вход</div>
+      <input type="text" id="loginName" class="pole-modalki" placeholder="Логин">
+      <input type="password" id="loginPass" class="pole-modalki" placeholder="Пароль">
+      <button class="knopka-modalki" onclick="submitLogin()">Войти</button>
+      <div class="soobshenie" id="loginMsg"></div>
+      <div class="tekst-pereklyucheniya">Нет аккаунта? <span onclick="switchToRegister()">Регистрация</span></div>
+    </div>
+  </div>
+
+  <div class="fon-modalnogo-okna" id="registerModal">
+    <div class="modalnoe-okno">
+      <button class="zakryt-modalku" onclick="closeModal('registerModal')">×</button>
+      <div class="zagolovok-modalki">Регистрация</div>
+      <input type="text" id="registerName" class="pole-modalki" placeholder="Логин">
+      <input type="password" id="registerPass" class="pole-modalki" placeholder="Пароль">
+      <input type="password" id="registerPass2" class="pole-modalki" placeholder="Повтор пароля">
+      <button class="knopka-modalki" onclick="submitRegister()">Создать аккаунт</button>
+      <div class="soobshenie" id="registerMsg"></div>
+      <div class="tekst-pereklyucheniya">Уже есть аккаунт? <span onclick="switchToLogin()">Войти</span></div>
+    </div>
+  </div>
+
+  <script>
+    const videos = {
+      1: "https://vkvideo.ru/video_ext.php?oid=-196980150&id=456239023&hash=1ae84bb9102b8a22&hd=4",
+      2: "https://vkvideo.ru/video_ext.php?oid=-196980150&id=456239024&hash=03cfee36eb3b093e&hd=4",
+      3: "https://vkvideo.ru/video_ext.php?oid=-196980150&id=456239025&hash=732696f458d5cca3&hd=4",
+      4: "https://vkvideo.ru/video_ext.php?oid=-196980150&id=456239026&hash=b245e036940795ba&hd=4",
+      5: "https://vkvideo.ru/video_ext.php?oid=-196980150&id=456239027&hash=95255e945e04b87b&hd=4",
+      6: "https://vkvideo.ru/video_ext.php?oid=-196980150&id=456239028&hash=f9c49f87074f7058&hd=4",
+      7: "https://vkvideo.ru/video_ext.php?oid=-196980150&id=456239029&hash=764fe1425e52e6b3&hd=4",
+      8: "https://vkvideo.ru/video_ext.php?oid=-196980150&id=456239030&hash=4bde74e678653244&hd=4",
+      9: "https://vkvideo.ru/video_ext.php?oid=-196980150&id=456239031&hash=fff69f42a18ae962&hd=4",
+      10: "https://vkvideo.ru/video_ext.php?oid=-196980150&id=456239032&hash=a273bf549b466794&hd=4",
+      11: "https://vkvideo.ru/video_ext.php?oid=-196980150&id=456239033&hash=0e691c544471d093&hd=4",
+      12: "https://vkvideo.ru/video_ext.php?oid=-196980150&id=456239035&hash=7e8724b6675fd8fb&hd=4",
+      13: "https://vkvideo.ru/video_ext.php?oid=-196980150&id=456239035&hash=7e8724b6675fd8fb&hd=4",
+      14: "https://vkvideo.ru/video_ext.php?oid=-196980150&id=456239036&hash=3fa79de7735b6d5c&hd=4",
+      15: "https://vkvideo.ru/video_ext.php?oid=-196980150&id=456239037&hash=ef6a1dc7f2c99ec7&hd=4",
+      16: "https://vkvideo.ru/video_ext.php?oid=-196980150&id=456239038&hash=c7d364caf1702ece&hd=4",
+      17: "https://vkvideo.ru/video_ext.php?oid=-196980150&id=456239040&hash=81ade54f944b6cfc&hd=4",
+      18: "https://vkvideo.ru/video_ext.php?oid=-196980150&id=456239042&hash=c61acaf0b7e17f64&hd=4",
+      19: "https://vkvideo.ru/video_ext.php?oid=-196980150&id=456239045&hash=c7a6a6465e932bd6&hd=4",
+      20: "https://vkvideo.ru/video_ext.php?oid=-196980150&id=456239047&hash=f167849af826cd3b&hd=4",
+      21: "https://vkvideo.ru/video_ext.php?oid=-196980150&id=456239049&hash=567eed18febd85e9&hd=4",
+      22: "https://vkvideo.ru/video_ext.php?oid=-196980150&id=456239051&hash=3734d4e9ba7d9aa7&hd=4",
+      23: "https://vkvideo.ru/video_ext.php?oid=-196980150&id=456239053&hash=5f648280edc61355&hd=4",
+      24: "https://vkvideo.ru/video_ext.php?oid=-196980150&id=456239055&hash=60372e92bb7ec93c&hd=4",
+      25: "https://vkvideo.ru/video_ext.php?oid=-196980150&id=456239057&hash=fe75cae5f8640ff9&hd=4",
+      26: "https://vkvideo.ru/video_ext.php?oid=-196980150&id=456239039&hash=9dc114f35eb2b353&hd=4",
+      27: "https://vkvideo.ru/video_ext.php?oid=-196980150&id=456239041&hash=921727613e154f9e&hd=4",
+      28: "https://vkvideo.ru/video_ext.php?oid=-196980150&id=456239043&hash=5b329d55f817ac77&hd=4",
+      29: "https://vkvideo.ru/video_ext.php?oid=-196980150&id=456239044&hash=c292e5a954e58765&hd=4",
+      30: "https://vkvideo.ru/video_ext.php?oid=-196980150&id=456239046&hash=1c35b349cff880ff&hd=4",
+      31: "https://vkvideo.ru/video_ext.php?oid=-196980150&id=456239048&hash=4759698d3cace49b&hd=4",
+      32: "https://vkvideo.ru/video_ext.php?oid=-196980150&id=456239050&hash=e4f3df2a6aa37dad&hd=4",
+      33: "https://vkvideo.ru/video_ext.php?oid=-196980150&id=456239052&hash=f776424b1cacdb9a&hd=4",
+      34: "https://vkvideo.ru/video_ext.php?oid=-196980150&id=456239054&hash=b2291abac12dcb47&hd=4",
+      35: "https://vkvideo.ru/video_ext.php?oid=-196980150&id=456239056&hash=9e7c4a3eb6dd3c8d&hd=4",
+      36: "https://vkvideo.ru/video_ext.php?oid=-196980150&id=456239058&hash=75e725a98d78dd78&hd=4",
+      37: "https://vkvideo.ru/video_ext.php?oid=-196980150&id=456239059&hash=ed19d9565e0f51f5&hd=4"
+    };
+
+    function changeEpisode(ep) {
+      document.getElementById("player").src = videos[ep];
+      localStorage.setItem("selectedEpisode", ep);
+    }
+
+    window.addEventListener("DOMContentLoaded", () => {
+      const savedEpisode = localStorage.getItem("selectedEpisode");
+      if (savedEpisode && videos[savedEpisode]) {
+        document.getElementById("episodeSelect").value = savedEpisode;
+        document.getElementById("player").src = videos[savedEpisode];
+      }
+    });
+
+    function openLogin() {
+      document.getElementById("loginName").value = document.getElementById("miniLogin").value;
+      document.getElementById("loginPass").value = document.getElementById("miniPassword").value;
+      document.getElementById("loginMsg").textContent = "";
+      document.getElementById("loginModal").style.display = "flex";
+    }
+
+    function closeModal(id) {
+      document.getElementById(id).style.display = "none";
+    }
+
+    function switchToRegister() {
+      closeModal("loginModal");
+      document.getElementById("registerMsg").textContent = "";
+      document.getElementById("registerModal").style.display = "flex";
+    }
+
+    function switchToLogin() {
+      closeModal("registerModal");
+      document.getElementById("loginMsg").textContent = "";
+      document.getElementById("loginModal").style.display = "flex";
+    }
+
+    function submitRegister() {
+      const name = document.getElementById("registerName").value.trim();
+      const pass = document.getElementById("registerPass").value.trim();
+      const pass2 = document.getElementById("registerPass2").value.trim();
+      const msg = document.getElementById("registerMsg");
+
+      if (!name || !pass || !pass2) {
+        msg.textContent = "Заполни все поля.";
+        return;
+      }
+
+      if (pass !== pass2) {
+        msg.textContent = "Пароли не совпадают.";
+        return;
+      }
+
+      localStorage.setItem("deathnoteUser", JSON.stringify({ name, pass }));
+      msg.textContent = "Регистрация успешна.";
+
+      setTimeout(() => {
+        closeModal("registerModal");
+      }, 700);
+    }
+
+    function submitLogin() {
+      const name = document.getElementById("loginName").value.trim();
+      const pass = document.getElementById("loginPass").value.trim();
+      const msg = document.getElementById("loginMsg");
+      const user = JSON.parse(localStorage.getItem("deathnoteUser"));
+
+      if (!name || !pass) {
+        msg.textContent = "Заполни логин и пароль.";
+        return;
+      }
+
+      if (!user) {
+        msg.textContent = "Сначала зарегистрируйся.";
+        return;
+      }
+
+      if (user.name === name && user.pass === pass) {
+        msg.textContent = "Вход выполнен.";
+        setTimeout(() => closeModal("loginModal"), 700);
+      } else {
+        msg.textContent = "Неверный логин или пароль.";
+      }
+    }
+
+    window.addEventListener("click", (e) => {
+      if (e.target.id === "loginModal") closeModal("loginModal");
+      if (e.target.id === "registerModal") closeModal("registerModal");
+    });
+  </script>
+</body>
+</html>
